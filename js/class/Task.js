@@ -1,4 +1,4 @@
-export class Task {
+class Task {
     #id;
     #text;
 
@@ -15,3 +15,5 @@ export class Task {
         return this.#text;
     }
 }
+
+export { Task };

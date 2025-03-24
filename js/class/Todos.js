@@ -4,7 +4,11 @@ export class Todos {
     #tasks = [];
     #url = "https://todo-server-2025.onrender.com/"; // Hardcoded backend URL
 
-    constructor() {}
+    constructor() {
+        if (typeof Task === 'undefined') {
+            throw new Error('Task class is not properly imported');
+        }
+    }
 
     getTasks() {
         return new Promise((resolve, reject) => {
@@ -16,8 +20,13 @@ export class Todos {
                 })
                 .then(data => {
                     console.log("Received tasks:", data);
-                    this.#readJson(data);
-                    resolve(this.#tasks);
+                    try {
+                        this.#readJson(data);
+                        resolve(this.#tasks);
+                    } catch (error) {
+                        console.error("Error processing tasks:", error);
+                        reject(error);
+                    }
                 })
                 .catch(err => {
                     console.error("Error fetching tasks:", err);
@@ -29,15 +38,25 @@ export class Todos {
     #readJson(json) {
         this.#tasks = [];
         json.forEach(obj => {
-            const task = new Task(obj.id, obj.description);
-            this.#tasks.push(task);
+            try {
+                const task = new Task(obj.id, obj.description);
+                this.#tasks.push(task);
+            } catch (error) {
+                console.error("Error creating task:", error);
+                throw error;
+            }
         });
     }
 
     #addToList(taskJson) {
-        const task = new Task(taskJson.id, taskJson.description);
-        this.#tasks.push(task);
-        return task;
+        try {
+            const task = new Task(taskJson.id, taskJson.description);
+            this.#tasks.push(task);
+            return task;
+        } catch (error) {
+            console.error("Error adding task to list:", error);
+            throw error;
+        }
     }
 
     #removeFromList(id) {
@@ -60,7 +79,11 @@ export class Todos {
                 })
                 .then(data => {
                     console.log("Task added successfully:", data);
-                    resolve(this.#addToList(data));
+                    try {
+                        resolve(this.#addToList(data));
+                    } catch (error) {
+                        reject(error);
+                    }
                 })
                 .catch(err => {
                     console.error("Error adding task:", err);
