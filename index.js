@@ -3,6 +3,7 @@ import { Todos } from "./js/class/Todos.js";
 const input = document.querySelector("#todo-input");
 const list = document.querySelector("#todo-list");
 const errorDiv = document.querySelector("#error-message");
+const form = document.querySelector("form");
 const todos = new Todos();
 
 const showError = (message) => {
@@ -45,6 +46,23 @@ const renderTask = (task) => {
     list.appendChild(li);
 };
 
+const addTask = (event) => {
+    event.preventDefault();
+    const taskText = input.value.trim();
+    if (taskText !== "") {
+        input.disabled = true;
+        todos.addTask(taskText).then(task => {
+            renderTask(task);
+            input.value = "";
+            input.disabled = false;
+            input.focus();
+        }).catch(err => {
+            showError("Failed to add task. Please try again.");
+            input.disabled = false;
+        });
+    }
+};
+
 const getTasks = () => {
     input.disabled = true;
     todos.getTasks()
@@ -62,22 +80,11 @@ const getTasks = () => {
         });
 };
 
+// Add event listeners
+form.addEventListener("submit", addTask);
 input.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
-        event.preventDefault();
-        const taskText = input.value.trim();
-        if (taskText !== "") {
-            input.disabled = true;
-            todos.addTask(taskText).then(task => {
-                renderTask(task);
-                input.value = "";
-                input.disabled = false;
-                input.focus();
-            }).catch(err => {
-                showError("Failed to add task. Please try again.");
-                input.disabled = false;
-            });
-        }
+        addTask(event);
     }
 });
 
