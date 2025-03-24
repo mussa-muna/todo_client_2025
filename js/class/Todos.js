@@ -6,13 +6,21 @@ export class Todos {
 
     getTasks() {
         return new Promise((resolve, reject) => {
+            console.log("Fetching tasks from server...");
             fetch(this.#url)
-                .then(response => response.json())
+                .then(response => {
+                    console.log("Server response:", response);
+                    return response.json();
+                })
                 .then(data => {
+                    console.log("Received tasks:", data);
                     this.#readJson(data);
                     resolve(this.#tasks);
                 })
-                .catch(err => reject(err));
+                .catch(err => {
+                    console.error("Error fetching tasks:", err);
+                    reject(err);
+                });
         });
     }
 
@@ -36,6 +44,7 @@ export class Todos {
 
     addTask(description) {
         return new Promise((resolve, reject) => {
+            console.log("Adding new task:", description);
             fetch(this.#url + "new", {
                 method: "POST",
                 headers: {
@@ -43,23 +52,40 @@ export class Todos {
                 },
                 body: JSON.stringify({ description: description })
             })
-                .then(response => response.json())
-                .then(data => resolve(this.#addToList(data)))
-                .catch(err => reject(err));
+                .then(response => {
+                    console.log("Server response:", response);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Task added successfully:", data);
+                    resolve(this.#addToList(data));
+                })
+                .catch(err => {
+                    console.error("Error adding task:", err);
+                    reject(err);
+                });
         });
     }
 
     removeTask(id) {
         return new Promise((resolve, reject) => {
+            console.log("Removing task with ID:", id);
             fetch(this.#url + "delete/" + id, {
                 method: "DELETE"
             })
-                .then(response => response.json())
+                .then(response => {
+                    console.log("Server response:", response);
+                    return response.json();
+                })
                 .then(data => {
+                    console.log("Task removed successfully:", data);
                     this.#removeFromList(id);
                     resolve(data.id);
                 })
-                .catch(err => reject(err));
+                .catch(err => {
+                    console.error("Error removing task:", err);
+                    reject(err);
+                });
         });
     }
 }
