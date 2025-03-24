@@ -1,11 +1,59 @@
-h1 {
-    margin: 1em 0;
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
 }
 
-form {
-    margin-bottom: 1em;
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+h1 {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.form-control {
+    border-radius: 8px 0 0 8px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: none;
+}
+
+.btn-primary {
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1.5rem;
+}
+
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem;
+    transition: background-color 0.2s;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
 }
 
 .float-end {
-    float: right;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.float-end:hover {
+    opacity: 1;
+}
+
+#error-message {
+    border-radius: 8px;
+    margin-bottom: 1rem;
 }
