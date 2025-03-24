@@ -1,3 +1,5 @@
+import { Task } from "./Task.js";
+
 export class Todos {
     #tasks = [];
     #url = "https://todo-server-2025.onrender.com/"; // Hardcoded backend URL
