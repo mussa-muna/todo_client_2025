@@ -1,0 +1,11 @@
+h1 {
+    margin: 1em 0;
+}
+
+form {
+    margin-bottom: 1em;
+}
+
+.float-end {
+    float: right;
+}
